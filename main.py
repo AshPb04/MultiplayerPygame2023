@@ -167,7 +167,7 @@ class MainMenu:
                     if new:
                         print("NEW")
                         gameCode = self.__codeGenerator()
-                        self.__waitingRoom(playerID, nickname, gameCode, True)
+                        ##self.__waitingRoom(playerID, nickname, gameCode, True)
 
             menu.setBackground(self.__screen)
             new_game.draw(self.__screen)
