@@ -7,7 +7,6 @@ import pickle
 
 games = {}
 IDs = 0
-connected = set()
 server = socket.gethostbyname(socket.gethostname())
 # need to use a port that's open and mostly safe: 5555, 3141, 6022
 port = 5558
@@ -27,26 +26,19 @@ print("Waiting for a connection, Server Started")
 
 
 
-def threaded_client(conn, gameID, player):
+def Gameclient(conn, gameID, player):
     global IDs
-    # sends a message to the client once it has successfully connected to the server
     game = games[gameID]
     players = game.getPlayers()
     for p in players:
         p.updateMoneyAmount(game.moneyAmount())
     conn.send(pickle.dumps(players[player-1]))
-    # allows the while loop to continuously run while the client is connecting
+    
     while True:
         try:
-            # data represents the data that the server would receive from the client
-            # 2048 is the amount of bits the server can receive at once, the bigger num longer it takes to receive
             data = pickle.loads(conn.recv(4096))
-
-
-            # if the data can't be received the while loop will break, prevents infinite while loop
             if gameID in games:
                 if not data:
-                    print("Disconnected")
                     break
                 else:
                     players[player-1] = data
@@ -55,10 +47,8 @@ def threaded_client(conn, gameID, player):
                     reply = players[1]
                 else:
                     reply = players[0]
-                print("Received: ", data)
-                print("Sending: ", reply)
-                # when a server needs to send back information you need to encode it - safer
-                # encodes it into a bytes object, so when client receives the reply they also need to decode it
+                print(f"Player 1: {player[0].getPos()} at {player[0].getLocation()} \n Player 2: {player[1].getPos()} at {player[1].getLocation()}")
+                
                 conn.sendall(pickle.dumps(reply))
 
             else:
@@ -71,7 +61,7 @@ def threaded_client(conn, gameID, player):
     # once the while loop is broken notifies the connection is lost and that the connection closes
     print("Lost connection")
     del games[gameID]
-    print(f"{gameID} deleted")
+    print(f"Game {gameID} deleted")
     IDs -= 1
     conn.close()
 
@@ -94,8 +84,7 @@ while True:
         print(games)
         print(IDs)
 
-    # this creates a thread which allows the function stated to run in the background
-    # means that the function does not have to finish executing for the while loop to continue
-    start_new_thread(threaded_client, (conn, gameID, player))
+   # connects new player to the server
+    start_new_thread(Gameclient, (conn, gameID, player))
 
 
