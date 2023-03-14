@@ -35,6 +35,7 @@ def threaded_client(conn, gameID, player):
     for p in players:
         p.updateMoneyAmount(game.moneyAmount())
     conn.send(pickle.dumps(players[player-1]))
+
     # allows the while loop to continuously run while the client is connecting
     while True:
         try:
@@ -89,7 +90,6 @@ while True:
         print(games)
 
     else:
-        games[gameID].ready()
         player = 2
         print(games)
         print(IDs)
@@ -97,5 +97,6 @@ while True:
     # this creates a thread which allows the function stated to run in the background
     # means that the function does not have to finish executing for the while loop to continue
     start_new_thread(threaded_client, (conn, gameID, player))
+
 
 
