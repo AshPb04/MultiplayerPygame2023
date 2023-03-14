@@ -1,10 +1,9 @@
 import string
 import random
-import game
+from game import *
 import pygame.sysfont
 from characters import *
 from GUI import *
-from network import *
 import mysql.connector
 
 ################## connect to sql database ######################
@@ -165,13 +164,11 @@ class MainMenu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     new = new_game.interaction(mouse)
                     if new:
-                        print("NEW")
                         gameCode = self.__codeGenerator()
-                        ##self.__waitingRoom(playerID, nickname, gameCode, True)
-
+                        Game = LetsBeTriangles(playerID, gameCode)
+                        Game.waitingRoom()
             menu.setBackground(self.__screen)
             new_game.draw(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
         pygame.quit()
-
