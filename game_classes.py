@@ -20,12 +20,8 @@ class Game:
     def __init__(self, gameID):
         self.__gameID = gameID
         self.__players = [Player(480, 1), Player(480, 2)]
-        self.__ready = False
         self.__money = 2000
-        self.__basementAccess = {}
-        self.__legalEnding = False
-        self.__playersQueue = 0
-        self.__illegalEnding =False
+        self.__finish = False
 
     def getPlayers(self):
         return self.__players
@@ -36,43 +32,27 @@ class Game:
     def setAmount(self, amount):
         self.__money -= amount
 
-    def ready(self):
-        self.__ready = True
+    def gameEnd(self):
+        self.__finish = True
 
-    def setBasementAccess(self, access, playerNum):
-        if len(self.__basementAccess) == 0:
-            if access[1] == "Y":
-                self.__basementAccess["player 1"] = True
-                self.__basementAccess["player 2"] = True
-            else:
-                if playerNum == 1:
-                    self.__basementAccess["player 1"] = True
-                    self.__basementAccess["player 2"] = False
-                else:
-                    self.__basementAccess["player 1"] = False
-                    self.__basementAccess["player 2"] = True
-
-            return "Granted"
-
-        else:
-            if self.__basementAccess[f"player {playerNum}"]:
-                return "Granted"
-
-        return "Denied"
+    def finished(self):
+        return self.__finish
 
 
 class Player:
     def __init__(self, pos, player):
         self.__x = pos
         self.__y = 440
+        self.__speed = 100
         self.__playerNum = player
         self.__location = "garden"
         print("player is:", player)
         print("player is at:", self.__location)
-        self.__speed = 100
         self.__basementAccess = None
         self.__inventory = []
         self.__money = 0
+        self.__ready = False
+
     def draw(self, screen):
         if self.__playerNum == 1:
             image = pygame.image.load(
@@ -83,6 +63,9 @@ class Player:
         image = pygame.transform.smoothscale(image, (720, 420))
         rect = image.get_rect(center=(self.__x, self.__y))
         screen.blit(image, rect)
+
+    def getPlayerNum(self):
+        return self.__playerNum
 
     def getPos(self):
         pos = self.__x
@@ -96,19 +79,33 @@ class Player:
 
     def setLocation(self, location):
         self.__location = location
+        print("player is at:", self.__location)
+
     def addItem(self, item):
         self.__inventory.append(item)
+
     def removeItem(self, item):
         self.__inventory.remove(item)
+
     def setBasementAccess(self, Access):
         self.__basementAccess = Access
         print(self.__basementAccess)
+
     def getBasementAccess(self):
         return self.__basementAccess
+
     def getMoney(self):
         return self.__money
+
     def updateMoneyAmount(self, amount):
         self.__money = amount
+
+    def ready(self):
+        return self.__ready
+
+    def isReady(self):
+        self.__ready = True
+
     def move(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -156,5 +153,6 @@ class Contraband(Items):
         db.execute(f"UPDATE `games` SET `moneyAmount`= '{amount}' WHERE `gameCode` = 'FII1';")
         connection.commit()
         del self.__itemList[item]
+
 
 
