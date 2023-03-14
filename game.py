@@ -4,10 +4,12 @@ from network import Network
 
 
 class LetsBeTriangles:
-    def __init__(self, playerID):
+    def __init__(self, playerID, gameCode):
+        self.__gameCode = gameCode
         self.__playerID = playerID
         self.__network = Network()
         self.__player = self.__network.getGame()
+        self.__playerNum = self.__player.getPlayerNum()
         ################# CREATING WINDOW ##############################
         pygame.init()
         self.__animation_increment = 50
@@ -18,7 +20,10 @@ class LetsBeTriangles:
         self.__itemLists = []
         self.__createItems()
         self.__backgrounds = self.__createBackgrounds()
-        self.__waitingRoom = Background("waiting room 1")
+        if self.__playerNum == 1:
+            self.__waitingRoom = Background("waiting room 1")
+        else:
+            self.__waitingRoom = Background("waiting room 2")
         self.__welcome = Dialogue(text=["Welcome to the game, Let's Be Triangles!!!",
                                         "You and your friend have known each other for some time huh."
                                         "ever since you were born."
@@ -77,6 +82,23 @@ class LetsBeTriangles:
                 town, trainStation, street, queue, lab,
                 shop1, shop2, shady_guy]
 
+    def waitingRoom(self):
+        self.__player.isReady()
+        clock = pygame.time.Clock()
+        running = True
+        while running:
+            clock.tick(60)
+            p2 = self.__network.send(self.__player)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            if p2.ready():
+                self.__gardenScreen(480)
+            self.__waitingRoom.setBackground(self.__screen)
+            pygame.display.flip()
+            clock.tick(self.__clock_tick_rate)
+        pygame.quit()
+
     def __updateScreen(self, index, player2, location, text, choices):  # Updates screen when there are changes
         # waits if second player is not in the game yet
         apple = False
@@ -111,7 +133,7 @@ class LetsBeTriangles:
     def __addDialogue(self, text, choices, player2):
         pass
 
-    def gardenScreen(self, pos):
+    def __gardenScreen(self, pos):
         clock = pygame.time.Clock()
         self.__player.setPos(pos)
         self.__player.setLocation("garden")
@@ -402,3 +424,4 @@ class LetsBeTriangles:
                                                "Like parent like child."], 0)
             clock.tick(self.__clock_tick_rate)
         pygame.quit()
+
