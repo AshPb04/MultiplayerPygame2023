@@ -165,10 +165,14 @@ class MainMenu:
                     new = new_game.interaction(mouse)
                     if new:
                         gameCode = self.__codeGenerator()
-                        Game = LetsBeTriangles(playerID, gameCode)
-                        Game.waitingRoom()
             menu.setBackground(self.__screen)
             new_game.draw(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
         pygame.quit()
+        
+    def __startGame(self, playerID, gameCode):
+        Game = LetsBeTriangles(playerID, gameCode)
+        Game.waitingRoom()
+        self.loginScreen()
+        
