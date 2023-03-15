@@ -93,11 +93,11 @@ class LetsBeTriangles:
                 if event.type == pygame.QUIT:
                     running = False
             if p2.ready():
-                self.__gardenScreen(480)
+                break
             self.__waitingRoom.setBackground(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+        self.__gardenScreen(480)
 
     def __updateScreen(self, index, player2, location, text, choices):  # Updates screen when there are changes
         # waits if second player is not in the game yet
@@ -154,7 +154,7 @@ class LetsBeTriangles:
             self.__updateScreen(0, p2, "garden", None, 0)
 
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __livingroomScreen(self, pos):
         self.__startGame = True
@@ -176,7 +176,7 @@ class LetsBeTriangles:
                 self.gardenScreen(1050)
             self.__updateScreen(1, p2, "living room", ["Home sweet home, 20 years and it never feels old"], 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __hallwayScreen(self, pos):
         clock = pygame.time.Clock()
@@ -206,7 +206,7 @@ class LetsBeTriangles:
                 self.__livingroomScreen(1050)
             self.__updateScreen(2, p2, "hallway", None, 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __basementScreen(self, pos):
         clock = pygame.time.Clock()
@@ -227,7 +227,7 @@ class LetsBeTriangles:
                self.__hallwayScreen(1050)
             self.__updateScreen(3, p2, "basement", None, 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __townScreen(self, pos):
         self.__startGame = True
@@ -269,7 +269,7 @@ class LetsBeTriangles:
                                 0)
 
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __shop1Screen(self):
         clock = pygame.time.Clock()
@@ -290,7 +290,7 @@ class LetsBeTriangles:
             buyBox.createSurface(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __shop2Screen(self):
         clock = pygame.time.Clock()
@@ -308,7 +308,7 @@ class LetsBeTriangles:
             self.__backgrounds[10].setBackground(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __trainScreen(self, pos):
         clock = pygame.time.Clock()
@@ -331,7 +331,7 @@ class LetsBeTriangles:
                                 ["Ahhh the NSRS, reliable", " AND only 5 shaples to get to the City"],
                                 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __streetScreen(self, pos):
         clock = pygame.time.Clock()
@@ -357,7 +357,7 @@ class LetsBeTriangles:
                 self.__queueScreen(1050)
             self.__updateScreen(6, p2, "street", None, 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __blackmarketScreen(self):
         clock = pygame.time.Clock()
@@ -373,7 +373,7 @@ class LetsBeTriangles:
             self.__backgrounds[11].setBackground(self.__screen)
             pygame.display.flip()
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __queueScreen(self, pos):
         clock = pygame.time.Clock()
@@ -399,7 +399,7 @@ class LetsBeTriangles:
                                  "Security Guard: 'OUT OF LINE BACK OF THE LINE NO EXCEPTIONS'"],
                                 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
     def __labScreen(self, pos):
         clock = pygame.time.Clock()
@@ -423,5 +423,5 @@ class LetsBeTriangles:
                                                "I guess it wasn't just you and your friends dream.",
                                                "Like parent like child."], 0)
             clock.tick(self.__clock_tick_rate)
-        pygame.quit()
+
 
